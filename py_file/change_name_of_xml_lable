@@ -1,0 +1,101 @@
+import os
+import xml.etree.ElementTree as et
+import copy
+
+# path = '/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/Annotations/'
+# path0 = '/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/JPEGImages/'
+path = '/home/pc/Downloads/img_lable_done_1/'
+# fileList = os.listdir(path)
+# fileList =fileList[0:1]
+# n = 1
+
+
+class change_xml:
+    def __init__(self, path=None,add_num=None):
+        self.path = path
+        self.add_num = add_num
+
+        self.file_xml = None
+        self.root = None
+        self.file_name = None
+        self.filename_xml = None
+        self.xxx = None
+
+    def change_fileName(self, old_name=None, new_name=None):
+        if not self.root:
+            self.get_root()
+        if self.root:
+            bb = self.root.find('filename')
+            if self.add_num:
+                num = int(self.file_name[5:-4])
+                bb.text = bb.text[:5]+'{}'.format(num+self.add_num)+'.jpg'
+            else:
+                bb.text = self.filename_xml + '.jpg'
+            self.xxx = bb.text
+        else:
+            print('false')
+
+    def get_root(self):
+        if self.path and self.file_name:
+            self.file_xml = et.parse(self.path + self.file_name)
+            self.root = self.file_xml.getroot()
+        else:
+            print('false')
+
+    def change_path(self):
+        if not self.root:
+            self.get_root()
+        if self.root:
+            path_ = self.root.find('path')
+            if self.xxx:
+                path_.text = self.path + self.xxx
+            else:
+                path_.text = self.path + self.filename_xml + '.jpg'
+        else:
+            print('false')
+
+    def xml_save(self):
+        print(self.file_name)
+        self.file_xml.write(self.path + self.file_name, encoding="utf-8")
+        self.zero()
+
+    def get_file_name(self,name):
+        self.file_name = name
+        self.filename_xml = self.file_name[0:-4]
+
+    def zero(self):
+        self.file_xml = None
+        self.root = None
+        self.file_name = None
+        self.filename_xml = None
+        self.xxx = None
+
+def main():
+    file_name = 'photo'
+    start_num0= 1
+    start_num = copy.copy(start_num0)
+    CXml = change_xml(path)
+    fileList = os.listdir(path)
+    file_num = len(fileList)
+    for i in range(file_num):
+    # i=327
+        n = i+start_num
+        file_name0 = file_name +'{}.xml'.format(n)
+        path_b=path+file_name0
+        while not os.path.isfile(path_b):
+            print(n)
+            start_num +=1
+            n = i + start_num
+            file_name0 = file_name + '{}.xml'.format(n)
+            path_b = path + file_name0
+        print(file_name0)
+        CXml.get_file_name(file_name0)
+        CXml.change_fileName()
+        CXml.change_path()
+        CXml.xml_save()
+
+        # print(i)
+
+
+if __name__ == '__main__':
+    main()
