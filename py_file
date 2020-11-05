@@ -1,0 +1,91 @@
+from xml.dom.minidom import Document
+import xml.dom.minidom
+import os
+
+
+class build_xml:
+    def __init__(self):
+        self.doc = Document()
+        self.path = None
+        self.file = None
+        self.dir = None
+        self.current_element = None  # 当前父节点
+        self.name = []  # 储存当前父节点的栈 尾进尾出
+        self.mark = 1
+
+    def init_name(self, path):
+        self.path = path
+        self.file = None
+        self.dir = None
+        self.current_element = None  # 当前父节点
+        self.name = []  # 储存当前父节点的栈 尾进尾出
+
+    def get_tree_name(self, list_tree):
+        # 按照list_tree 递归式创建xml文件的父子标签 和子叶上的值
+        list_len = len(list_tree)
+        name = list_tree[0]
+        if not self.name:
+            self.name.append(self.doc)
+        self.current_element = self.name[-1]
+        # print(name)
+        if list_len == 1:
+            # 对子叶上数据单独处理
+            object_child_text = self.doc.createTextNode(name)
+            self.current_element.appendChild(object_child_text)
+            self.name.pop()
+            self.mark = 0
+        else:
+            for i in range(list_len):
+                if i == 0:
+                    object_child = self.doc.createElement(name)
+                    self.current_element.appendChild(object_child)
+                    self.name.append(object_child)
+                if i > 0:
+                    self.get_tree_name(list_tree[i])
+                if i == list_len - 1:
+                    # 每次便利完一个list之后 父节点前移一位，但子叶上的节点除外 否则会移两位
+                    if self.mark:
+                        self.name.pop()
+                    self.mark += 1
+                    pass
+
+    def save_xml(self):
+        f = open(self.path, 'w')
+        self.doc.writexml(f, indent='', newl='\n', addindent='\t')
+        f.close()
+
+
+def build_xml0(folder, filename, path_jpg, path):
+    # 按照list_tree 递归式创建xml文件
+    xml0 = build_xml()
+    list_tree = ["annotation",
+                 ["folder", [folder]],
+                 ["filename", [filename]],
+                 ["path", [path_jpg]],
+                 ["source", ["database", ["Unkonwn"]]],
+                 ["size", ["width", ["1280"]], ["height", ["720"]], ["depth", ["3"]]],
+                 ["segmented", ["0"]]
+                 ]
+
+    xml0.init_name(path)
+    xml0.get_tree_name(list_tree)
+    xml0.save_xml()
+
+
+def main():
+    path_jpg_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/JPEGImages/"
+    path_lable_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/Annotations/"
+    jpg_folder = "JPEGImages"
+    jpg_file_list = os.listdir(path_jpg_dir)
+    for jpg_name in jpg_file_list:
+        jpg_name_re = jpg_name[:-4]
+        path_lable_file = path_lable_dir + jpg_name_re + '.xml'
+        if not os.path.isfile(path_lable_file):
+            # jpg对应的xml文件不存在 怎创建对应文件
+            print(jpg_name)
+            path_jpg = path_lable_dir + jpg_name
+            build_xml0(jpg_folder, jpg_name, path_jpg, path_lable_file)
+
+
+if __name__ == "__main__":
+    main()
