@@ -2,13 +2,7 @@ import os
 import xml.etree.ElementTree as et
 import copy
 
-# path = '/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/Annotations/'
-# path0 = '/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/JPEGImages/'
-path = '/home/pc/Downloads/img_lable_done_1/'
-# fileList = os.listdir(path)
-# fileList =fileList[0:1]
-# n = 1
-
+path = 'Downloads/img_lable/'
 
 class change_xml:
     def __init__(self, path=None,add_num=None):
