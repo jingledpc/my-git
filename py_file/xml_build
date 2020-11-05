@@ -73,8 +73,8 @@ def build_xml0(folder, filename, path_jpg, path):
 
 
 def main():
-    path_jpg_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/JPEGImages/"
-    path_lable_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/Annotations/"
+    path_jpg_dir = "/home/.../JPEGImages/"
+    path_lable_dir = "/home/.../Annotations/"
     jpg_folder = "JPEGImages"
     jpg_file_list = os.listdir(path_jpg_dir)
     for jpg_name in jpg_file_list:
