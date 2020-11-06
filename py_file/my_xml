@@ -3,7 +3,7 @@ import xml.dom.minidom
 import os
 
 
-class build_xml:
+class my_xml:
     def __init__(self):
         self.doc = Document()
         self.path = None
