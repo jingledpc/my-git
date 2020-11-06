@@ -1,0 +1,11 @@
+from xml_tools import build_xml
+
+def main():
+    path = "/home/.../photo1.xml"
+    xml0 = build_xml()
+    list0 = ["annotation", "object", "name", "person"]
+    xml0.romove_node(list0, path, 2)
+
+
+if __name__ == "__main__":
+    main()
