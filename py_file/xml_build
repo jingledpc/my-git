@@ -1,0 +1,36 @@
+import os
+form xml_tool import build_xml
+
+def build_xml0(folder, filename, path_jpg, path):
+    # 按照list_tree 递归式创建xml文件
+    xml0 = build_xml()
+    list_tree = ["annotation",
+                 ["folder", [folder]],
+                 ["filename", [filename]],
+                 ["path", [path_jpg]],
+                 ["source", ["database", ["Unkonwn"]]],
+                 ["size", ["width", ["1280"]], ["height", ["720"]], ["depth", ["3"]]],
+                 ["segmented", ["0"]]
+                 ]
+
+    xml0.init_name(path)
+    xml0.get_tree_name(list_tree)
+    xml0.save_xml()
+
+
+def main():
+    path_jpg_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/JPEGImages/"
+    path_lable_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/Annotations/"
+    jpg_folder = "JPEGImages"
+    jpg_file_list = os.listdir(path_jpg_dir)
+    for jpg_name in jpg_file_list:
+        jpg_name_re = jpg_name[:-4]
+        path_lable_file = path_lable_dir + jpg_name_re + '.xml'
+        if not os.path.isfile(path_lable_file):
+            # jpg对应的xml文件不存在 怎创建对应文件
+            # print(jpg_name)
+            path_jpg = path_lable_dir + jpg_name
+            build_xml0(jpg_folder, jpg_name, path_jpg, path_lable_file)
+
+if __name__ == "__main__":
+    main()
