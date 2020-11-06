@@ -1,9 +1,10 @@
 import os
-form xml_tools import build_xml
+from xml_tools.my_xml import my_xml
+
 
 def build_xml0(folder, filename, path_jpg, path):
     # 按照list_tree 递归式创建xml文件
-    xml0 = build_xml()
+    xml0 = my_xml()
     list_tree = ["annotation",
                  ["folder", [folder]],
                  ["filename", [filename]],
@@ -19,8 +20,8 @@ def build_xml0(folder, filename, path_jpg, path):
 
 
 def main():
-    path_jpg_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/JPEGImages/"
-    path_lable_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/VOCdevkit/VOC2007/Annotations/"
+    path_jpg_dir = "/VOCdevkit/VOC2007/JPEGImages/"
+    path_lable_dir = "/VOCdevkit/VOC2007/Annotations/"
     jpg_folder = "JPEGImages"
     jpg_file_list = os.listdir(path_jpg_dir)
     for jpg_name in jpg_file_list:
@@ -28,9 +29,11 @@ def main():
         path_lable_file = path_lable_dir + jpg_name_re + '.xml'
         if not os.path.isfile(path_lable_file):
             # jpg对应的xml文件不存在 怎创建对应文件
-            # print(jpg_name)
+            print(jpg_name)
             path_jpg = path_lable_dir + jpg_name
             build_xml0(jpg_folder, jpg_name, path_jpg, path_lable_file)
 
+
 if __name__ == "__main__":
     main()
+
