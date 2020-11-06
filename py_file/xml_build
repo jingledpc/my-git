@@ -1,5 +1,5 @@
 import os
-form xml_tool import build_xml
+form xml_tools import build_xml
 
 def build_xml0(folder, filename, path_jpg, path):
     # 按照list_tree 递归式创建xml文件
