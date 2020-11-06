@@ -83,7 +83,7 @@ class my_xml:
                     a = a.parentNode
                 parent = a.parentNode
                 parent.removeChild(a)
-        self.save_xml()
+            self.save_xml()
 
     def save_xml(self):
         f = open(self.path, 'w')
