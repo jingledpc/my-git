@@ -1,0 +1,18 @@
+from xml_tools.my_xml import my_xml
+import os
+
+
+def main():
+    # 删除xml文件对应的标签
+    xml0 = my_xml()
+    list0 = ["annotation", "object", "name", "person"]
+    path_dir = "/VOCdevkit/VOC2007/Annotations/"
+    # path_dir = "/home/pc/rospakage/src/cv_bridgepc/scripts/test/"
+    list_file = os.listdir(path_dir)
+    for i in list_file:
+        xml0.romove_node(list0, path_dir + i, 2)
+
+
+if __name__ == "__main__":
+    main()
+
